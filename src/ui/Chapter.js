@@ -7,7 +7,7 @@ export const Chapter = ({ text, imageURL, ...rest }) => {
 
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-row">
             <p {...rest} className="my-6">
                 {text}
             </p>

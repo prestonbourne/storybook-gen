@@ -17,26 +17,35 @@ async function getDallEResponse(prompt) {
         prompt,
         response_format: "url",
     });
+
+    return Response.json({ data: dallERes });
 }
 
 async function getStableDiffusionResponse(prompt) {
-    const DAN_STABLE_DIFFUSION_URL = "https://bc5c1122a5ac2b3ed0.gradio.live";
-    const IMAGE_GENERATION_ENDPOINT = "/sdapi/v1/txt2img";
-    const payload = {
-        prompt,
-        steps: 5,
-    };
+    try {
+        const DAN_STABLE_DIFFUSION_URL =
+            "https://bc5c1122a5ac2b3ed0.gradio.live";
+        const IMAGE_GENERATION_ENDPOINT = "/sdapi/v1/txt2img";
+        const payload = {
+            prompt,
+            steps: 5,
+        };
 
-    const stableDiffRes = await fetch(
-        DAN_STABLE_DIFFUSION_URL + IMAGE_GENERATION_ENDPOINT,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-        }
-    );
+        const stableDiffRes = await fetch(
+            DAN_STABLE_DIFFUSION_URL + IMAGE_GENERATION_ENDPOINT,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            }
+        );
 
-    return Response.json({ data: stableDiffRes.json() });
+        const data = await stableDiffRes.json();
+
+        return Response.json({ data });
+    } catch (error) {
+        return Response.json({ data: "", error: error.message });
+    }
 }
